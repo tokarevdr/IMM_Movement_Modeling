@@ -2,8 +2,12 @@
 
 #include <qmath.h>
 
-InertialModule::InertialModule()
+InertialModule::InertialModule(QObject *parent) : QObject(parent)
 {
+    Q_UNUSED(parent)
+
+    connect(&timer, QTimer::timeout, this, InertialModule::handle);
+
     for (size_t i = 0; i < 3; ++i)
     {
         for (size_t j = 0; j < 3; ++j)
@@ -152,13 +156,15 @@ void InertialModule::handle()
     //theta = atan(-C_0_gamma[2][0] / C_0_gamma[2][2]);
     //K = 2 * atan(C_0_gamma[0][1] / (C_0_gamma[1][1] + sqrt(1 - C_0_gamma[2][1]*C_0_gamma[2][1])));
 
-    K = K + (1/cos(psi) * (omega_x*sin(theta) - omega_z*cos(theta)) - sin(psi)/cos(psi) * (omega_E*sin(K) + omega_N*cos(K)) + omega_h) * dt;
-    psi = psi + (omega_z*sin(theta) + omega_x*cos(theta) + omega_N*sin(K) - omega_E*cos(K)) * dt;
-    theta = theta + (omega_y + sin(psi)/cos(psi) * omega_x*sin(theta) - omega_z*cos(theta) - 1/cos(psi)*(omega_E*sin(K) + omega_N*cos(K))) * dt;
+    K = K + (1/cos(psi) * (omega_x_0*sin(theta) - omega_z_0*cos(theta)) - sin(psi)/cos(psi) * (omega_E*sin(K) + omega_N*cos(K)) + omega_h) * dt;
+    psi = psi + (omega_z_0*sin(theta) + omega_x_0*cos(theta) + omega_N*sin(K) - omega_E*cos(K)) * dt;
+    theta = theta + (omega_y_0 + sin(psi)/cos(psi) * omega_x_0*sin(theta) - omega_z_0*cos(theta) - 1/cos(psi)*(omega_E*sin(K) + omega_N*cos(K))) * dt;
 
-    psi_dot = omega_z * sin(theta) + omega_x * cos(theta) + omega_N * sin(K) - omega_E * cos(K);
-    theta_dot = omega_y + tan(psi) * (omega_x * sin(theta) - omega_z * cos(theta)) - 1/cos(psi) * (omega_E * sin(K) + omega_N * cos(K));
-    K_dot = 1/cos(psi) * (omega_x * sin(theta) - omega_z * cos(theta)) - tan(psi) * (omega_E * sin(K) + omega_N * cos(K)) + omega_h;
+    K = limits(K, 0, 2*M_PI);
+
+    psi_dot = omega_z_0 * sin(theta) + omega_x_0 * cos(theta) + omega_N * sin(K) - omega_E * cos(K);
+    theta_dot = omega_y_0 + tan(psi) * (omega_x_0 * sin(theta) - omega_z_0 * cos(theta)) - 1/cos(psi) * (omega_E * sin(K) + omega_N * cos(K));
+    K_dot = 1/cos(psi) * (omega_x_0 * sin(theta) - omega_z_0 * cos(theta)) - tan(psi) * (omega_E * sin(K) + omega_N * cos(K)) + omega_h;
 
     n_E = C_0_gamma[0][0] * n_x + C_0_gamma[0][1] * n_y + C_0_gamma[0][2] * n_z;
     n_N = C_0_gamma[1][0] * n_x + C_0_gamma[1][1] * n_y + C_0_gamma[1][2] * n_z;
@@ -192,6 +198,9 @@ void InertialModule::handle()
     lambda = lambda + V_E / (R_lambda * cos(phi)) * dt;
     h = h + V_h * dt;
 
+    phi = triangle(M_PI/2, phi, 2*M_PI);
+    lambda = saw(M_PI, lambda, 2*M_PI);
+
     data[Parameter::t].append(dt*iteration / 60.);
     data[Parameter::K].append(K * 180 / M_PI);
     data[Parameter::psi].append(psi * 180 / M_PI);
@@ -209,7 +218,41 @@ void InertialModule::handle()
     data[Parameter::lambda].append(lambda * 180 / M_PI);
     data[Parameter::h].append(h);
 
+    currentData[Parameter::t] = dt*iteration / 60.;
+    currentData[Parameter::K] = K * 180 / M_PI;
+    currentData[Parameter::psi] = psi * 180 / M_PI;
+    currentData[Parameter::theta] = theta * 180 / M_PI;
+    currentData[Parameter::K_dot] = K_dot * 180 / M_PI;
+    currentData[Parameter::psi_dot] = psi_dot * 180 / M_PI;
+    currentData[Parameter::theta_dot] = theta_dot * 180 / M_PI;
+    currentData[Parameter::V_E] = V_E;
+    currentData[Parameter::V_N] = V_N;
+    currentData[Parameter::V_h] = V_h;
+    currentData[Parameter::V_E_dot] = V_E_dot;
+    currentData[Parameter::V_N_dot] = V_N_dot;
+    currentData[Parameter::V_h_dot] = V_h_dot;
+    currentData[Parameter::phi] = phi * 180 / M_PI;
+    currentData[Parameter::lambda] = lambda * 180 / M_PI;
+    currentData[Parameter::h] = h;
+
+    emit dataChanged(currentData);
+
     ++iteration;
+}
+
+void InertialModule::start()
+{
+    timer.start();
+}
+
+void InertialModule::stop()
+{
+    timer.stop();
+}
+
+void InertialModule::setTimerInterval(int msec)
+{
+    timer.setInterval(msec);
 }
 
 double InertialModule::limits(double value, double min, double max)
@@ -217,9 +260,19 @@ double InertialModule::limits(double value, double min, double max)
     while(value > max)
         value -= max;
 
-    while (value < min)
+    while (value <= min)
         value += max;
 
     return value;
+}
+
+double InertialModule::saw(double amplitude, double value, double period)
+{
+    return 2*amplitude/M_PI * atan( tan( M_PI*value/period ) );
+}
+
+double InertialModule::triangle(double amplitude, double value, double period)
+{
+    return 2*amplitude/M_PI * asin( sin( 2*M_PI/period *value ) );
 }
 

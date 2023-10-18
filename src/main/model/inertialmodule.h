@@ -5,11 +5,13 @@
 
 #include <QVector>
 #include <QMap>
+#include <QTimer>
 
-class InertialModule
+class InertialModule : public QObject
 {
+    Q_OBJECT
 public:
-    InertialModule();
+    explicit InertialModule(QObject *parent = 0);
     ~InertialModule();
 
     enum class Parameter
@@ -55,11 +57,23 @@ public:
     QVector<double> getParameter(Parameter param) const;
 
     void handle();
+    void start();
+    void stop();
+    void setTimerInterval(int msec);
+
+signals:
+    void dataChanged(QMap<InertialModule::Parameter, double> currentData);
 
 private:
     double limits(double value, double min, double max);
 
-    double dt = 0.001;
+    // пилообразный сигнал для ограничения долготы в пределах [-180; 180]
+    double saw(double amplitude, double value, double period);
+
+    // пилообразный сигнал для ограничения широты в пределах [-90; 90]
+    double triangle(double amplitude, double value, double period);
+
+    double dt = 0.01;
 
     double n_x = 0.;
     double n_y = 0.;
@@ -141,6 +155,9 @@ private:
     quint64 iteration = 0;
 
     QMap< Parameter, QVector<double> > data;
+    QMap<Parameter, double> currentData;
+    QTimer timer;
+    int timerInterval = 0;
 };
 
 #endif // INERTIALMODULE_H
