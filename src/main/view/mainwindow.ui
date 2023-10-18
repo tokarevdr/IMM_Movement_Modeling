@@ -47,6 +47,9 @@
              <pointsize>12</pointsize>
             </font>
            </property>
+           <property name="text">
+            <string>0.01</string>
+           </property>
           </widget>
          </item>
          <item>
@@ -85,6 +88,9 @@
              <pointsize>12</pointsize>
             </font>
            </property>
+           <property name="text">
+            <string>0</string>
+           </property>
           </widget>
          </item>
          <item>
@@ -117,11 +123,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditn_n_x">
+          <widget class="QLineEdit" name="lineEdit_n_x">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -148,6 +157,9 @@
              <pointsize>12</pointsize>
             </font>
            </property>
+           <property name="text">
+            <string>0</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -167,11 +179,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditn_n_z">
+          <widget class="QLineEdit" name="lineEdit_n_z">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -192,11 +207,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditn_omega_x">
+          <widget class="QLineEdit" name="lineEdit_omega_x">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -217,11 +235,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditn_omega_y">
+          <widget class="QLineEdit" name="lineEdit_omega_y">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -242,11 +263,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditn_omega_z">
+          <widget class="QLineEdit" name="lineEdit_omega_z">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -267,11 +291,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditn_rho">
+          <widget class="QLineEdit" name="lineEdit_rho">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -512,6 +539,50 @@
          </item>
         </layout>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_start">
+           <property name="text">
+            <string>Старт</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_stop">
+           <property name="text">
+            <string>Стоп</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
     </item>
@@ -523,7 +594,7 @@
      <x>0</x>
      <y>0</y>
      <width>878</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
