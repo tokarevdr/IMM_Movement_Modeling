@@ -4,7 +4,28 @@
 
 InertialModule::InertialModule()
 {
+    for (size_t i = 0; i < 3; ++i)
+    {
+        for (size_t j = 0; j < 3; ++j)
+        {
+                C_b_i[i][j] = 0.;
+                C_b_0[i][j] = 0.;
+                //C_0_i[i][j] = 1.;
+                C_b_i[i][j] = 0.;
+                C_i_gamma[i][j] = 0.;
+                C_0_gamma[i][j] = 0.;
+        }
+    }
 
+    C_0_i[0][0] = 1.;
+    C_0_i[0][1] = 0.;
+    C_0_i[0][2] = 0.;
+    C_0_i[1][0] = 0.;
+    C_0_i[1][1] = 1.;
+    C_0_i[1][2] = 0.;
+    C_0_i[2][0] = 0.;
+    C_0_i[2][1] = 0.;
+    C_0_i[2][2] = 1.;
 }
 
 InertialModule::~InertialModule()
@@ -20,250 +41,6 @@ void InertialModule::set_dt(double dt)
     this->dt = dt;
 }
 
-void InertialModule::set_V_x(double V_x)
-{
-    this->V_x = V_x;
-}
-
-void InertialModule::set_V_y(double V_y)
-{
-    this->V_y = V_y;
-}
-
-void InertialModule::set_V_z(double V_z)
-{
-    this->V_z = V_z;
-}
-
-void InertialModule::set_W_x(double W_x)
-{
-    this->W_x = W_x;
-}
-
-void InertialModule::set_W_y(double W_y)
-{
-    this->W_y = W_y;
-}
-
-void InertialModule::set_W_z(double W_z)
-{
-    this->W_z = W_z;
-}
-
-void InertialModule::set_omega_circulation(double omega_circulation)
-{
-    this->omega_circulation = omega_circulation;
-}
-
-void InertialModule::set_K_max(double K_max)
-{
-    this->K_max = K_max;
-}
-
-void InertialModule::set_psi_max(double psi_max)
-{
-    this->psi_max = psi_max;
-}
-
-void InertialModule::set_theta_max(double theta_max)
-{
-    this->theta_max = theta_max;
-}
-
-void InertialModule::set_T_K(double T_K)
-{
-    if (T_K <= 0)
-        return;
-
-    this->T_K = T_K;
-}
-
-void InertialModule::set_T_psi(double T_psi)
-{
-    if (T_psi <= 0)
-        return;
-
-    this->T_psi = T_psi;
-}
-
-void InertialModule::set_T_theta(double T_theta)
-{
-    if (T_theta <= 0)
-        return;
-
-    this->T_theta = T_theta;
-}
-
-void InertialModule::set_PSI_K(double PSI_K)
-{
-    this->PSI_K = PSI_K;
-}
-
-void InertialModule::set_PSI_psi(double PSI_psi)
-{
-    this->PSI_psi = PSI_psi;
-}
-
-void InertialModule::set_PSI_theta(double PSI_theta)
-{
-    this->PSI_theta = PSI_theta;
-}
-
-void InertialModule::set_phi(double phi)
-{
-    this->phi = phi;
-}
-
-void InertialModule::set_lambda(double lambda)
-{
-    this->lambda = lambda;
-}
-
-double InertialModule::get_dt()
-{
-    return dt;
-}
-
-double InertialModule::get_V_x()
-{
-    return V_x;
-}
-
-double InertialModule::get_V_y()
-{
-    return V_y;
-}
-
-double InertialModule::get_V_z()
-{
-    return V_z;
-}
-
-double InertialModule::get_W_x()
-{
-    return W_x;
-}
-
-double InertialModule::get_W_y()
-{
-    return W_y;
-}
-
-double InertialModule::get_W_z()
-{
-    return W_z;
-}
-
-double InertialModule::get_omega_circulation()
-{
-    return omega_circulation;
-}
-
-double InertialModule::get_K_max()
-{
-    return K_max;
-}
-
-double InertialModule::get_psi_max()
-{
-    return psi_max;
-}
-
-double InertialModule::get_theta_max()
-{
-    return theta_max;
-}
-
-double InertialModule::get_T_K()
-{
-    return T_K;
-}
-
-double InertialModule::get_T_psi()
-{
-    return T_psi;
-}
-
-double InertialModule::get_T_theta()
-{
-    return T_theta;
-}
-
-double InertialModule::get_PSI_K()
-{
-    return PSI_K;
-}
-
-double InertialModule::get_PSI_psi()
-{
-    return PSI_psi;
-}
-
-double InertialModule::get_PSI_theta()
-{
-    return PSI_theta;
-}
-
-double InertialModule::get_K()
-{
-    return K;
-}
-
-double InertialModule::get_psi()
-{
-    return psi;
-}
-
-double InertialModule::get_theta()
-{
-    return theta;
-}
-
-double InertialModule::get_phi()
-{
-    return phi;
-}
-
-double InertialModule::get_lambda()
-{
-    return lambda;
-}
-
-double InertialModule::get_h()
-{
-    return h;
-}
-
-std::array< std::array<double, 3>, 3> InertialModule::get_C()
-{
-    return C;
-}
-
-double InertialModule::get_R_phi()
-{
-    return R_phi;
-}
-
-double InertialModule::get_R_lambda()
-{
-    return R_lambda;
-}
-
-double InertialModule::get_V_E()
-{
-    return V_E;
-}
-
-double InertialModule::get_V_N()
-{
-    return V_N;
-}
-
-double InertialModule::get_V_h()
-{
-    return V_h;
-}
-
 QVector<double> InertialModule::getParameter(Parameter param) const
 {
     return data.value(param);
@@ -271,49 +48,168 @@ QVector<double> InertialModule::getParameter(Parameter param) const
 
 void InertialModule::handle()
 {
-    size_t point_num = 1000000;
+    C_b_0[0][0] = cos(rho);
+    C_b_0[0][1] = sin(rho);
+    C_b_0[0][2] = 0.;
+    C_b_0[1][0] = -sin(rho);
+    C_b_0[1][1] = cos(rho);
+    C_b_0[1][2] = 0.;
+    C_b_0[2][0] = 0.;
+    C_b_0[2][1] = 0.;
+    C_b_0[2][2] = 1.;
 
-    for (size_t i = 0; i < point_num; ++i)
-    {
-        R_phi = a * (1 - e_squared) / pow(pow(1 - e_squared * sin(phi), 2.), 3./2) + h;
-        R_lambda = a / pow(pow(1 - e_squared * sin(phi), 2.), 1./2) + h;
+    omega_x_0 = C_b_0[0][0] * omega_x + C_b_0[0][1] * omega_y + C_b_0[0][2] * omega_z;
+    omega_y_0 = C_b_0[1][0] * omega_x + C_b_0[1][1] * omega_y + C_b_0[1][2] * omega_z;
+    omega_z_0 = C_b_0[2][0] * omega_x + C_b_0[2][1] * omega_y + C_b_0[2][2] * omega_z;
 
-        K = K + omega_circulation * dt + K_max * sin(2*M_PI / T_K * dt + PSI_K);
-        K = limits(K, 0, 2*M_PI);
+//    C_0_i[0][0] = C_0_i[0][0] + (C_0_i[0][1] * omega_z - C_0_i[0][2] * omega_y) * dt;
+//    C_0_i[0][1] = C_0_i[0][1] + (C_0_i[0][2] * omega_x - C_0_i[0][0] * omega_z) * dt;
+//    C_0_i[0][2] = C_0_i[0][2] + (C_0_i[0][0] * omega_y - C_0_i[0][1] * omega_x) * dt;
+//    C_0_i[1][0] = C_0_i[1][0] + (C_0_i[1][1] * omega_z - C_0_i[1][2] * omega_y) * dt;
+//    C_0_i[1][1] = C_0_i[1][1] + (C_0_i[1][2] * omega_x - C_0_i[1][0] * omega_z) * dt;
+//    C_0_i[1][2] = C_0_i[1][2] + (C_0_i[1][0] * omega_y - C_0_i[1][1] * omega_x) * dt;
+//    C_0_i[2][0] = C_0_i[2][0] + (C_0_i[2][1] * omega_z - C_0_i[2][2] * omega_y) * dt;
+//    C_0_i[2][1] = C_0_i[2][1] + (C_0_i[2][2] * omega_x - C_0_i[2][0] * omega_z) * dt;
+//    C_0_i[2][2] = C_0_i[2][2] + (C_0_i[2][0] * omega_y - C_0_i[2][1] * omega_x) * dt;
 
-        psi = psi + psi_max * sin(2*M_PI / T_psi * dt + PSI_psi);
+//    for (size_t i = 0; i < 3; ++i)
+//    {
+//        for (size_t j = 0; j < 3; ++j)
+//        {
+//            C_b_i[i][j] = 0.;
 
-        theta = theta + theta_max * sin(2*M_PI / T_theta * dt + PSI_theta);
+//            for (size_t k = 0; k < 3; ++k)
+//            {
+//                C_b_i[i][j] +=  C_0_i[i][k] * C_b_0[k][j];
+//            }
+//        }
+//    }
 
-        C[0][0] = cos(K) * cos(theta) + sin(K) * sin(psi) * sin(theta);
-        C[0][1] = sin(K) * cos(psi);
-        C[0][2] = cos(K) * sin(theta) - sin(K) * sin(psi) * cos(theta);
-        C[1][0] = -sin(K) * cos(theta) + cos(K) * sin(psi) * sin(theta);
-        C[1][1] = cos(K) * cos(psi);
-        C[1][2] = -sin(K) * sin(theta) - cos(K) * sin(psi) * cos(theta);
-        C[2][0] = -cos(psi) * sin(theta);
-        C[2][1] = sin(psi);
-        C[2][2] = cos(psi) * cos(theta);
+//    lambda_star = lambda + Omega*dt*iteration;
 
-        V_x = V_x + W_x * dt;
-        V_y = V_y + W_y * dt;
-        V_z = V_z + W_z * dt;
+//    C_i_gamma[0][0] = cos(lambda_star); //транспонированная
+//    C_i_gamma[0][1] = 0.;
+//    C_i_gamma[0][2] = -sin(lambda_star);
+//    C_i_gamma[1][0] = -sin(lambda_star) * sin(phi);
+//    C_i_gamma[1][1] = cos(phi);
+//    C_i_gamma[1][2] = -cos(lambda_star) * sin(phi);
+//    C_i_gamma[2][0] = sin(lambda_star) * cos(phi);
+//    C_i_gamma[2][1] = sin(phi);
+//    C_i_gamma[2][2] = cos(lambda_star) * cos(phi);
 
-        V_E = C[0][0] * V_x + C[0][1] *  V_y + C[0][2] * V_z;
-        V_N = C[1][0] * V_x + C[1][1] *  V_y + C[1][2] * V_z;
-        V_h = C[2][0] * V_x + C[2][1] *  V_y + C[2][2] * V_z;
+//    C_i_gamma[0][0] = cos(lambda_star);
+//    C_i_gamma[0][1] = -sin(lambda_star) * sin(phi);
+//    C_i_gamma[0][2] = sin(lambda_star) * cos(phi);
+//    C_i_gamma[1][0] = 0.;
+//    C_i_gamma[1][1] = cos(phi);
+//    C_i_gamma[1][2] = sin(phi);
+//    C_i_gamma[2][0] = -sin(lambda_star);
+//    C_i_gamma[2][1] = -cos(lambda_star) * sin(phi);
+//    C_i_gamma[2][2] = cos(lambda_star) * cos(phi);
 
-        phi = phi + V_N / R_phi * dt;
-        lambda = lambda + V_E / (R_lambda * cos(phi)) * dt;
-        h = h + V_h * dt;
+//    for (size_t i = 0; i < 3; ++i)
+//    {
+//        for (size_t j = 0; j < 3; ++j)
+//        {
+//            C_0_gamma[i][j] = 0.;
 
-        data[Parameter::t].append(dt*i / 60.);
-        data[Parameter::phi].append(phi * 180 / M_PI);
-        data[Parameter::lambda].append(lambda * 180 / M_PI);
-        data[Parameter::K].append(K * 180 / M_PI);
-        data[Parameter::psi].append(psi * 180 / M_PI);
-        data[Parameter::theta].append(theta * 180 / M_PI);
-    }
+//            for (size_t k = 0; k < 3; ++k)
+//            {
+//                C_0_gamma[i][j] += C_i_gamma[i][k] * C_b_i[k][j];
+//            }
+//        }
+//    }
+
+    C_0_gamma[0][0] = cos(K)*cos(theta) + sin(K)*sin(psi)*sin(K);
+    C_0_gamma[0][1] = sin(K)*cos(psi);
+    C_0_gamma[0][2] = cos(K)*sin(theta) - sin(K)*sin(psi)*cos(theta);
+
+    C_0_gamma[1][0] = -sin(K)*cos(theta) + cos(K)*sin(psi)*sin(theta);
+    C_0_gamma[1][1] = cos(K)*cos(psi);
+    C_0_gamma[1][2] = -(sin(K)*sin(theta) + cos(K)*sin(psi)*cos(theta));
+
+    C_0_gamma[2][0] = -cos(psi)*sin(theta);
+    C_0_gamma[2][1] = sin(psi);
+    C_0_gamma[2][2] = cos(psi)*cos(theta);
+
+
+    R_phi = a * (1 - e_squared) / pow(pow(1 - e_squared * sin(phi), 2.), 3./2) + h;
+    R_lambda = a / pow(pow(1 - e_squared * sin(phi), 2.), 1./2) + h;
+
+    omega_E = - V_N / R_phi;
+    omega_N = Omega * cos(phi) + V_E / R_lambda;
+    omega_h = Omega * sin(phi) + V_E / R_lambda * tan(phi);
+
+    // Через обобщенное уравнение Пуассона?
+//    C_0_gamma[0][0] = C_0_gamma[0][0] + (C_0_gamma[0][1]*omega_z_0 - C_0_gamma[0][2]*omega_y_0 + C_0_gamma[1][0]*omega_h - C_0_gamma[2][0]*omega_N) * dt;
+//    C_0_gamma[0][1] = C_0_gamma[0][1] + (C_0_gamma[0][2]*omega_x_0 - C_0_gamma[0][0]*omega_z_0 + C_0_gamma[1][1]*omega_h - C_0_gamma[2][1]*omega_N) * dt;
+//    C_0_gamma[0][2] = C_0_gamma[0][2] + (C_0_gamma[0][0]*omega_y_0 - C_0_gamma[0][1]*omega_x_0 + C_0_gamma[1][2]*omega_h - C_0_gamma[2][2]*omega_N) * dt;
+//    C_0_gamma[1][0] = C_0_gamma[1][0] + (C_0_gamma[1][1]*omega_z_0 - C_0_gamma[1][2]*omega_y_0 + C_0_gamma[1][0]*omega_h - C_0_gamma[2][0]*omega_N) * dt;
+//    C_0_gamma[1][1] = C_0_gamma[1][1] + (C_0_gamma[0][2]*omega_x_0 - C_0_gamma[0][0]*omega_z_0 + C_0_gamma[1][1]*omega_h - C_0_gamma[2][1]*omega_E) * dt;
+//    C_0_gamma[1][2] = C_0_gamma[1][2] + (C_0_gamma[0][0]*omega_y_0 - C_0_gamma[0][1]*omega_x_0 + C_0_gamma[1][2]*omega_h - C_0_gamma[2][2]*omega_E) * dt;
+
+    //psi = atan(C_0_gamma[2][1] / sqrt(1 - C_0_gamma[2][1]*C_0_gamma[2][1]));
+    //theta = atan(-C_0_gamma[2][0] / C_0_gamma[2][2]);
+    //K = 2 * atan(C_0_gamma[0][1] / (C_0_gamma[1][1] + sqrt(1 - C_0_gamma[2][1]*C_0_gamma[2][1])));
+
+    K = K + (1/cos(psi) * (omega_x*sin(theta) - omega_z*cos(theta)) - sin(psi)/cos(psi) * (omega_E*sin(K) + omega_N*cos(K)) + omega_h) * dt;
+    psi = psi + (omega_z*sin(theta) + omega_x*cos(theta) + omega_N*sin(K) - omega_E*cos(K)) * dt;
+    theta = theta + (omega_y + sin(psi)/cos(psi) * omega_x*sin(theta) - omega_z*cos(theta) - 1/cos(psi)*(omega_E*sin(K) + omega_N*cos(K))) * dt;
+
+    psi_dot = omega_z * sin(theta) + omega_x * cos(theta) + omega_N * sin(K) - omega_E * cos(K);
+    theta_dot = omega_y + tan(psi) * (omega_x * sin(theta) - omega_z * cos(theta)) - 1/cos(psi) * (omega_E * sin(K) + omega_N * cos(K));
+    K_dot = 1/cos(psi) * (omega_x * sin(theta) - omega_z * cos(theta)) - tan(psi) * (omega_E * sin(K) + omega_N * cos(K)) + omega_h;
+
+    n_E = C_0_gamma[0][0] * n_x + C_0_gamma[0][1] * n_y + C_0_gamma[0][2] * n_z;
+    n_N = C_0_gamma[1][0] * n_x + C_0_gamma[1][1] * n_y + C_0_gamma[1][2] * n_z;
+    n_h = C_0_gamma[2][0] * n_x + C_0_gamma[2][1] * n_y + C_0_gamma[2][2] * n_z;
+
+    g_h = g * (1 + beta * sin(phi)*sin(phi) + beta_1 * sin(2*phi)*sin(2*phi));
+
+    lambda_dot = (lambda - lambda_prev) / dt;
+    phi_dot = (phi - phi_prev) / dt;
+
+    a_E_Cor = g_E + V_h * (2*Omega + lambda_dot) * cos(phi) - V_N * (2*Omega + lambda_dot) * sin(phi);
+    a_N_Cor = g_N + V_E * (2*Omega + lambda_dot) * sin(phi) + V_h * phi_dot;
+    //a_h_Cor = g_h - V_E * (2*Omega + lambda_dot) * cos(phi) - V_N * phi_dot;
+
+    V_E_dot = (V_E - V_E_prev) / dt;
+    V_N_dot = (V_N - V_N_prev) / dt;
+    V_h_dot = (V_h - V_h_prev) / dt;
+
+    V_E_prev = V_E;
+    V_N_prev = V_N;
+    V_h_prev = V_h;
+
+    V_E = V_E + (n_E - a_E_Cor) * dt;
+    V_N = V_N + (n_N - a_N_Cor) * dt;
+    V_h = V_h + (n_h - a_h_Cor) * dt;
+
+    phi_prev = phi;
+    lambda_prev = lambda;
+
+    phi = phi + V_N / R_phi * dt;
+    lambda = lambda + V_E / (R_lambda * cos(phi)) * dt;
+    h = h + V_h * dt;
+
+    data[Parameter::t].append(dt*iteration / 60.);
+    data[Parameter::K].append(K * 180 / M_PI);
+    data[Parameter::psi].append(psi * 180 / M_PI);
+    data[Parameter::theta].append(theta * 180 / M_PI);
+    data[Parameter::K_dot].append(K_dot * 180 / M_PI);
+    data[Parameter::psi_dot].append(psi_dot * 180 / M_PI);
+    data[Parameter::theta_dot].append(theta_dot * 180 / M_PI);
+    data[Parameter::V_E].append(V_E);
+    data[Parameter::V_N].append(V_N);
+    data[Parameter::V_h].append(V_h);
+    data[Parameter::V_E_dot].append(V_E_dot);
+    data[Parameter::V_N_dot].append(V_N_dot);
+    data[Parameter::V_h_dot].append(V_h_dot);
+    data[Parameter::phi].append(phi * 180 / M_PI);
+    data[Parameter::lambda].append(lambda * 180 / M_PI);
+    data[Parameter::h].append(h);
+
+    ++iteration;
 }
 
 double InertialModule::limits(double value, double min, double max)

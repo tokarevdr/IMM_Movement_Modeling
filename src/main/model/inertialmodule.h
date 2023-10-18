@@ -18,63 +18,39 @@ public:
         K,
         psi,
         theta,
-        phi,
-        lambda,
-        h,
+        K_dot,
+        psi_dot,
+        theta_dot,
         V_E,
         V_N,
-        V_h
+        V_h,
+        V_E_dot,
+        V_N_dot,
+        V_h_dot,
+        phi,
+        lambda,
+        h
     };
 
     void set_dt(double dt);
-    void set_V_x(double V_x);
-    void set_V_y(double V_y);
-    void set_V_z(double V_z);
-    void set_W_x(double W_x);
-    void set_W_y(double W_y);
-    void set_W_z(double W_z);
-    void set_omega_circulation(double omega_circulation);
-    void set_K_max(double K_max);
-    void set_psi_max(double psi_max);
-    void set_theta_max(double theta_max);
-    void set_T_K(double T_K);
-    void set_T_psi(double T_psi);
-    void set_T_theta(double T_theta);
-    void set_PSI_K(double PSI_K);
-    void set_PSI_psi(double PSI_psi);
-    void set_PSI_theta(double PSI_theta);
-    void set_phi(double phi);
-    void set_lambda(double lambda);
 
-    double get_dt();
-    double get_V_x();
-    double get_V_y();
-    double get_V_z();
-    double get_W_x();
-    double get_W_y();
-    double get_W_z();
-    double get_omega_circulation();
-    double get_K_max();
-    double get_psi_max();
-    double get_theta_max();
-    double get_T_K();
-    double get_T_psi();
-    double get_T_theta();
-    double get_PSI_K();
-    double get_PSI_psi();
-    double get_PSI_theta();
-    double get_K();
-    double get_psi();
-    double get_theta();
-    double get_phi();
-    double get_lambda();
-    double get_h();
-    std::array< std::array<double, 3>, 3> get_C();
-    double get_R_phi();
-    double get_R_lambda();
-    double get_V_E();
-    double get_V_N();
-    double get_V_h();
+    void set_n_x(double n_x) {this->n_x = n_x;}
+    void set_n_y(double n_y) {this->n_y = n_y;}
+    void set_n_z(double n_z) {this->n_z = n_z;}
+
+    void set_omega_x(double omega_x) {this->omega_x = omega_x;}
+    void set_omega_y(double omega_y) {this->omega_y = omega_y;}
+    void set_omega_z(double omega_z) {this->omega_z = omega_z;}
+
+    void set_rho(double rho) {this->rho = rho;}
+
+    void set_phi(double phi) {this->phi = phi; this->phi_prev = phi;}
+    void set_lambda(double lambda) {this->lambda = lambda; this->lambda_prev = lambda;}
+    void set_h(double h) {this->h = h;}
+
+    void set_K(double K) {this->K = K;}
+    void set_psi(double psi) {this->psi = psi;}
+    void set_theta(double theta) {this->theta = theta;}
 
     QVector<double> getParameter(Parameter param) const;
 
@@ -83,42 +59,69 @@ public:
 private:
     double limits(double value, double min, double max);
 
-    double dt = 0.01;
+    double dt = 0.001;
 
-    double V_x = 0.;
-    double V_y = 0.;
-    double V_z = 0.;
+    double n_x = 0.;
+    double n_y = 0.;
+    double n_z = 0.;
 
-    double W_x = 0.;
-    double W_y = 0.;
-    double W_z = 0.;
+    double n_E = 0.;
+    double n_N = 0.;
+    double n_h = 0.;
 
-    double omega_circulation = 0.;
+    double omega_x = 0.;
+    double omega_y = 0.;
+    double omega_z = 0.;
 
-    double K_max = 0.;
-    double psi_max = 0.;
-    double theta_max = 0.;
+    double omega_x_0 = 0.;
+    double omega_y_0 = 0.;
+    double omega_z_0 = 0.;
 
-    double T_K = 1.;
-    double T_psi = 1.;
-    double T_theta = 1.;
+    double omega_E = 0.;
+    double omega_N = 0.;
+    double omega_h = 0.;
 
-    double PSI_K = 0.;
-    double PSI_psi = 0.;
-    double PSI_theta = 0.;
+    double rho = 0.;
 
     double K = 0;
     double psi = 0;
     double theta = 0;
 
+    double K_dot = 0;
+    double psi_dot = 0;
+    double theta_dot = 0;
+
     double phi = 0.;
     double lambda = 0.;
     double h = 0.;
 
-    std::array< std::array<double, 3>, 3> C;
+    double lambda_star = 0.;
+
+    double lambda_prev = 0.;
+    double lambda_dot = 0.;
+    double phi_prev = 0.;
+    double phi_dot = 0.;
+
+    std::array< std::array<double, 3>, 3> C_b_0;
+    std::array< std::array<double, 3>, 3> C_0_i;
+    std::array< std::array<double, 3>, 3> C_b_i;
+    std::array< std::array<double, 3>, 3> C_i_gamma;
+    std::array< std::array<double, 3>, 3> C_0_gamma;
 
     const double e_squared = 0.0066934;
     const double a = 6378245;
+    const double Omega = 7.292116e-5;
+    const double beta = 0.0053171;
+    const double beta_1 = 0.0000071;
+
+    double g_E = 0.;
+    double g_N = 0.;
+    double g_h = 0.;
+    double g = 9.780318;
+
+    double a_E_Cor = 0.;
+    double a_N_Cor = 0.;
+    double a_h_Cor = 0.;
 
     double R_phi = 0.;
     double R_lambda = 0.;
@@ -126,6 +129,16 @@ private:
     double V_E = 0.;
     double V_N = 0.;
     double V_h = 0.;
+
+    double V_E_prev = 0.;
+    double V_N_prev = 0.;
+    double V_h_prev = 0.;
+
+    double V_E_dot = 0.;
+    double V_N_dot = 0.;
+    double V_h_dot = 0.;
+
+    quint64 iteration = 0;
 
     QMap< Parameter, QVector<double> > data;
 };
