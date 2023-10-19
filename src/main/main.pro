@@ -8,11 +8,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
     view/mainwindow.cpp \
     model/inertialmodule.cpp \
-    ../../import/qcustomplot.cpp
+    ../../import/qcustomplot.cpp \
+    model/abstractmodulecontroller.cpp \
+    model/timermodulecontroller.cpp \
+    model/datamodulecontroller.cpp
 
 HEADERS  += view/mainwindow.h \
     model/inertialmodule.h \
-    ../../import/qcustomplot.h
+    ../../import/qcustomplot.h \
+    model/abstractmodulecontroller.h \
+    model/timermodulecontroller.h \
+    model/datamodulecontroller.h
 
 FORMS    += view/mainwindow.ui
 

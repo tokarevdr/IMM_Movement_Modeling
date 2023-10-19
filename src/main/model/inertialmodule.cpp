@@ -2,12 +2,8 @@
 
 #include <qmath.h>
 
-InertialModule::InertialModule(QObject *parent) : QObject(parent)
+InertialModule::InertialModule()
 {
-    Q_UNUSED(parent)
-
-    connect(&timer, QTimer::timeout, this, InertialModule::handle);
-
     for (size_t i = 0; i < 3; ++i)
     {
         for (size_t j = 0; j < 3; ++j)
@@ -43,11 +39,6 @@ void InertialModule::set_dt(double dt)
         return;
 
     this->dt = dt;
-}
-
-QVector<double> InertialModule::getParameter(Parameter param) const
-{
-    return data.value(param);
 }
 
 void InertialModule::handle()
@@ -177,7 +168,7 @@ void InertialModule::handle()
 
     a_E_Cor = g_E + V_h * (2*Omega + lambda_dot) * cos(phi) - V_N * (2*Omega + lambda_dot) * sin(phi);
     a_N_Cor = g_N + V_E * (2*Omega + lambda_dot) * sin(phi) + V_h * phi_dot;
-    //a_h_Cor = g_h - V_E * (2*Omega + lambda_dot) * cos(phi) - V_N * phi_dot;
+    a_h_Cor = g_h - V_E * (2*Omega + lambda_dot) * cos(phi) - V_N * phi_dot;
 
     V_E_dot = (V_E - V_E_prev) / dt;
     V_N_dot = (V_N - V_N_prev) / dt;
@@ -201,58 +192,7 @@ void InertialModule::handle()
     phi = triangle(M_PI/2, phi, 2*M_PI);
     lambda = saw(M_PI, lambda, 2*M_PI);
 
-    data[Parameter::t].append(dt*iteration / 60.);
-    data[Parameter::K].append(K * 180 / M_PI);
-    data[Parameter::psi].append(psi * 180 / M_PI);
-    data[Parameter::theta].append(theta * 180 / M_PI);
-    data[Parameter::K_dot].append(K_dot * 180 / M_PI);
-    data[Parameter::psi_dot].append(psi_dot * 180 / M_PI);
-    data[Parameter::theta_dot].append(theta_dot * 180 / M_PI);
-    data[Parameter::V_E].append(V_E);
-    data[Parameter::V_N].append(V_N);
-    data[Parameter::V_h].append(V_h);
-    data[Parameter::V_E_dot].append(V_E_dot);
-    data[Parameter::V_N_dot].append(V_N_dot);
-    data[Parameter::V_h_dot].append(V_h_dot);
-    data[Parameter::phi].append(phi * 180 / M_PI);
-    data[Parameter::lambda].append(lambda * 180 / M_PI);
-    data[Parameter::h].append(h);
-
-    currentData[Parameter::t] = dt*iteration / 60.;
-    currentData[Parameter::K] = K * 180 / M_PI;
-    currentData[Parameter::psi] = psi * 180 / M_PI;
-    currentData[Parameter::theta] = theta * 180 / M_PI;
-    currentData[Parameter::K_dot] = K_dot * 180 / M_PI;
-    currentData[Parameter::psi_dot] = psi_dot * 180 / M_PI;
-    currentData[Parameter::theta_dot] = theta_dot * 180 / M_PI;
-    currentData[Parameter::V_E] = V_E;
-    currentData[Parameter::V_N] = V_N;
-    currentData[Parameter::V_h] = V_h;
-    currentData[Parameter::V_E_dot] = V_E_dot;
-    currentData[Parameter::V_N_dot] = V_N_dot;
-    currentData[Parameter::V_h_dot] = V_h_dot;
-    currentData[Parameter::phi] = phi * 180 / M_PI;
-    currentData[Parameter::lambda] = lambda * 180 / M_PI;
-    currentData[Parameter::h] = h;
-
-    emit dataChanged(currentData);
-
     ++iteration;
-}
-
-void InertialModule::start()
-{
-    timer.start();
-}
-
-void InertialModule::stop()
-{
-    timer.stop();
-}
-
-void InertialModule::setTimerInterval(int msec)
-{
-    timer.setInterval(msec);
 }
 
 double InertialModule::limits(double value, double min, double max)

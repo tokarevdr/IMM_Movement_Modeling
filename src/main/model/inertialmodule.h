@@ -3,36 +3,11 @@
 
 #include <array>
 
-#include <QVector>
-#include <QMap>
-#include <QTimer>
-
-class InertialModule : public QObject
+class InertialModule
 {
-    Q_OBJECT
 public:
-    explicit InertialModule(QObject *parent = 0);
+    InertialModule();
     ~InertialModule();
-
-    enum class Parameter
-    {
-        t,
-        K,
-        psi,
-        theta,
-        K_dot,
-        psi_dot,
-        theta_dot,
-        V_E,
-        V_N,
-        V_h,
-        V_E_dot,
-        V_N_dot,
-        V_h_dot,
-        phi,
-        lambda,
-        h
-    };
 
     void set_dt(double dt);
 
@@ -54,15 +29,24 @@ public:
     void set_psi(double psi) {this->psi = psi;}
     void set_theta(double theta) {this->theta = theta;}
 
-    QVector<double> getParameter(Parameter param) const;
+    double get_t() const { return dt*iteration; }
+    double get_K() const { return K; }
+    double get_psi() const { return psi; }
+    double get_theta() const { return theta; }
+    double get_K_dot() const { return K_dot; }
+    double get_psi_dot() const { return psi_dot; }
+    double get_theta_dot() const { return theta_dot; }
+    double get_V_E() const { return V_E; }
+    double get_V_N() const { return V_N; }
+    double get_V_h() const { return V_h; }
+    double get_V_E_dot() const { return V_E_dot; }
+    double get_V_N_dot() const { return V_N_dot; }
+    double get_V_h_dot() const { return V_h_dot; }
+    double get_phi() const { return phi; }
+    double get_lambda() const { return lambda; }
+    double get_h() const { return h; }
 
     void handle();
-    void start();
-    void stop();
-    void setTimerInterval(int msec);
-
-signals:
-    void dataChanged(QMap<InertialModule::Parameter, double> currentData);
 
 private:
     double limits(double value, double min, double max);
@@ -152,12 +136,7 @@ private:
     double V_N_dot = 0.;
     double V_h_dot = 0.;
 
-    quint64 iteration = 0;
-
-    QMap< Parameter, QVector<double> > data;
-    QMap<Parameter, double> currentData;
-    QTimer timer;
-    int timerInterval = 0;
+    long unsigned int iteration = 0;
 };
 
 #endif // INERTIALMODULE_H
