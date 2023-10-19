@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 
-#include "model/inertialmodule.h"
+//#include "model/timermodulecontroller.h"
+#include "model/datamodulecontroller.h"
 
 namespace Ui {
 class MainWindow;
@@ -44,11 +45,12 @@ private slots:
 
     void on_lineEdit_rho_returnPressed();
 
-    void onModule_dataChanged(QMap<InertialModule::Parameter, double> currentData);
+    void on_model_dataChanged();
 
 private:
     Ui::MainWindow *ui;
-    InertialModule module;
+    //TimerModuleController model;
+    DataModuleController model;
 };
 
 #endif // MAINWINDOW_H
