@@ -11,9 +11,9 @@ public:
     TimerModuleController(QObject *parent = 0);
     ~TimerModuleController();
 
-    void start();
-    void stop();
-    void setTimerInterval(int msec);
+    void start() override;
+    void stop() override;
+    void setTimerInterval(int msec) override;
 
 private:
     QTimer timer;
