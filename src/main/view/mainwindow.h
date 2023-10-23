@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 
-//#include "model/timermodulecontroller.h"
 #include "model/datamodulecontroller.h"
 
 namespace Ui {
@@ -49,7 +48,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    //TimerModuleController model;
     DataModuleController model;
 };
 

@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QFile>
-#include <algorithm>
-#include <QDebug>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -51,83 +47,12 @@ void MainWindow::on_comboBox_y_currentIndexChanged(int index)
 
 void MainWindow::on_pushButton_start_clicked()
 {
-    //model.start();
-
-    QFile file("F:/Учеба/Navigation 2023-10-18 20-17-43/Accelerometer.csv");
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-    file.readLine(); // скипаем заголовок
-
-    QString line;
-    QStringList values;
-
-    QVector<double> n_x;
-    QVector<double> n_y;
-    QVector<double> n_z;
-
-    while (!file.atEnd()) {
-        line = file.readLine();
-        values = line.split(',');
-
-        n_x.append(values.at(1).toDouble());
-        n_y.append(values.at(2).toDouble());
-        n_z.append(values.at(3).toDouble());
-    }
-
-    file.close();
-
-    file.setFileName("F:/Учеба/Navigation 2023-10-18 20-17-43/Gyroscope.csv");
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-    file.readLine(); // скипаем заголовок
-
-    QVector<double> omega_x;
-    QVector<double> omega_y;
-    QVector<double> omega_z;
-
-    while (!file.atEnd()) {
-        line = file.readLine();
-        values = line.split(',');
-
-        omega_x.append(values.at(1).toDouble());
-        omega_y.append(values.at(2).toDouble());
-        omega_z.append(values.at(3).toDouble());
-    }
-
-    file.close();
-
-    int samples = std::min<int>({n_x.count(), n_y.count(), n_z.count(),
-                                 omega_x.count(), omega_y.count(), omega_z.count()});
-
-    n_x.resize(samples);
-    n_y.resize(samples);
-    n_z.resize(samples);
-    omega_x.resize(samples);
-    omega_y.resize(samples);
-    omega_z.resize(samples);
-
-    qDebug() << n_x.first() << n_x.last();
-
-    model.setSamplesNumber(samples);
-    model.setData(AbstractModuleController::Input::dt, 0.0025);
-
-    model.setInputData(AbstractModuleController::Input::n_x, n_x);
-    model.setInputData(AbstractModuleController::Input::n_y, n_y);
-    model.setInputData(AbstractModuleController::Input::n_z, n_z);
-    model.setInputData(AbstractModuleController::Input::omega_x, omega_x);
-    model.setInputData(AbstractModuleController::Input::omega_y, omega_y);
-    model.setInputData(AbstractModuleController::Input::omega_z, omega_z);
-
-    //model.handle();
+    model.start();
 }
 
 void MainWindow::on_pushButton_stop_clicked()
 {
-    //model.stop();
+    model.stop();
 }
 
 void MainWindow::on_lineEdit_dt_returnPressed()
@@ -137,7 +62,7 @@ void MainWindow::on_lineEdit_dt_returnPressed()
 
 void MainWindow::on_lineEdit_interval_returnPressed()
 {
-    //model.setTimerInterval(ui->lineEdit_interval->text().toInt());
+    model.setTimerInterval(ui->lineEdit_interval->text().toInt());
 }
 
 void MainWindow::on_lineEdit_n_x_returnPressed()
