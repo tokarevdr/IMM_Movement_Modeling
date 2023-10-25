@@ -98,6 +98,14 @@ QVector<double> AbstractModuleController::getDataVector(Output parameter) const
     return data.value(parameter);
 }
 
+void AbstractModuleController::reset()
+{
+    module.reset();
+    data.clear();
+
+    emit dataChanged();
+}
+
 void AbstractModuleController::handle()
 {
     //for (size_t i = 0; i < 100; ++i)
@@ -119,7 +127,5 @@ void AbstractModuleController::handle()
     data[Output::phi].append(module.get_phi());
     data[Output::lambda].append(module.get_lambda());
     data[Output::h].append(module.get_h());
-
-    //emit dataChanged();
 }
 

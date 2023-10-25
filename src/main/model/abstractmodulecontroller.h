@@ -52,10 +52,14 @@ public:
     bool setData(AbstractModuleController::Input parameter, double value);
     double getData(AbstractModuleController::Output parameter) const;
     QVector<double> getDataVector(AbstractModuleController::Output parameter) const;
+    void reset();
     void handle();
+
     virtual void start() = 0;
     virtual void stop() = 0;
     virtual void setTimerInterval(int msec) = 0;
+
+    virtual void setSensorsDataFilePath(const QString &filepath) = 0;
 
 signals:
     void dataChanged();

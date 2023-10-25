@@ -11,9 +11,13 @@ public:
     TimerModuleController(QObject *parent = 0);
     ~TimerModuleController();
 
+    void handle();
+
     void start() override;
     void stop() override;
     void setTimerInterval(int msec) override;
+
+    void setSensorsDataFilePath(const QString &filepath) override;
 
 private:
     QTimer timer;

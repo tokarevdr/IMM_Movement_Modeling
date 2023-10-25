@@ -14,11 +14,13 @@ public:
     void start() override;
     void stop() override;
     void setTimerInterval(int msec) override;
+    void setSensorsDataFilePath(const QString &filepath) override;
     void handle();
 
 private:
     QMap< Input, QVector<double> > inputData;
     quint32 samplesNumber = 0;
+    QString sensorsDataFilePath;
 };
 
 #endif // DATAMODULECONTROLLER_H

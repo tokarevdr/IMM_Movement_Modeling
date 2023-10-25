@@ -32,9 +32,10 @@ void DataModuleController::setSamplesNumber(quint32 num)
 
 void DataModuleController::start()
 {
-    QString path = "C:/Users/Verak/OneDrive/Мага 1 сем/СММ ИНС/";
+    QFile file(sensorsDataFilePath);
 
-    QFile file(path + "sensors.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
 
     QString line;
     QStringList values;
@@ -46,21 +47,18 @@ void DataModuleController::start()
     QVector<double> omega_y;
     QVector<double> omega_z;
 
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    while (!file.atEnd())
     {
-        while (!file.atEnd())
-        {
-            line = file.readLine();
-            values = line.split(',');
+        line = file.readLine();
+        values = line.split(',');
 
-            n_x.append(values.at(0).toDouble());
-            n_y.append(values.at(1).toDouble());
-            n_z.append(values.at(2).toDouble());
+        n_x.append(values.at(0).toDouble());
+        n_y.append(values.at(1).toDouble());
+        n_z.append(values.at(2).toDouble());
 
-            omega_x.append(values.at(3).toDouble());
-            omega_y.append(values.at(4).toDouble());
-            omega_z.append(values.at(5).toDouble());
-        }
+        omega_x.append(values.at(3).toDouble());
+        omega_y.append(values.at(4).toDouble());
+        omega_z.append(values.at(5).toDouble());
     }
 
     int samples = std::min({n_x.count(), n_y.count(), n_z.count(),
@@ -74,8 +72,6 @@ void DataModuleController::start()
     omega_z.resize(samples);
 
     setSamplesNumber(samples);
-
-    setData(Input::dt, 0.01);
 
     setInputData(Input::n_x, n_x);
     setInputData(Input::n_y, n_y);
@@ -95,6 +91,11 @@ void DataModuleController::stop()
 void DataModuleController::setTimerInterval(int msec)
 {
     Q_UNUSED(msec);
+}
+
+void DataModuleController::setSensorsDataFilePath(const QString &filepath)
+{
+    sensorsDataFilePath = filepath;
 }
 
 void DataModuleController::handle()

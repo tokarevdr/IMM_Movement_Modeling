@@ -13,6 +13,13 @@ TimerModuleController::~TimerModuleController()
 
 }
 
+void TimerModuleController::handle()
+{
+    AbstractModuleController::handle();
+
+    emit dataChanged();
+}
+
 void TimerModuleController::start()
 {
     timer.start();
@@ -26,5 +33,10 @@ void TimerModuleController::stop()
 void TimerModuleController::setTimerInterval(int msec)
 {
     timer.setInterval(msec);
+}
+
+void TimerModuleController::setSensorsDataFilePath(const QString &filepath)
+{
+    Q_UNUSED(filepath);
 }
 
