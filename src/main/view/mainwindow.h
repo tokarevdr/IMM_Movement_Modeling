@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "model/datamodulecontroller.h"
+#include "model/abstractmodulecontroller.h"
 
 namespace Ui {
 class MainWindow;
@@ -46,9 +46,19 @@ private slots:
 
     void on_model_dataChanged();
 
+    void on_lineEdit_filepath_textChanged(const QString &arg1);
+
+    void on_tabWidget_currentChanged(int index);
+
+    void on_lineEdit_dt_2_returnPressed();
+
+    void on_pushButton_search_clicked();
+
+    void on_pushButton_reset_clicked();
+
 private:
     Ui::MainWindow *ui;
-    DataModuleController model;
+    AbstractModuleController *model;
 };
 
 #endif // MAINWINDOW_H
