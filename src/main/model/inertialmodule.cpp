@@ -8,24 +8,13 @@ InertialModule::InertialModule()
     {
         for (size_t j = 0; j < 3; ++j)
         {
-                C_b_i[i][j] = 0.;
                 C_b_0[i][j] = 0.;
-                //C_0_i[i][j] = 1.;
-                C_b_i[i][j] = 0.;
-                C_i_gamma[i][j] = 0.;
                 C_0_gamma[i][j] = 0.;
         }
     }
 
-    C_0_i[0][0] = 1.;
-    C_0_i[0][1] = 0.;
-    C_0_i[0][2] = 0.;
-    C_0_i[1][0] = 0.;
-    C_0_i[1][1] = 1.;
-    C_0_i[1][2] = 0.;
-    C_0_i[2][0] = 0.;
-    C_0_i[2][1] = 0.;
-    C_0_i[2][2] = 1.;
+    phi = 60 * M_PI/180;
+    lambda = 30 * M_PI/180;
 }
 
 InertialModule::~InertialModule()
@@ -39,6 +28,84 @@ void InertialModule::set_dt(double dt)
         return;
 
     this->dt = dt;
+}
+
+void InertialModule::reset()
+{
+    n_x = 0.;
+    n_y = 0.;
+    n_z = 0.;
+
+    n_E = 0.;
+    n_N = 0.;
+    n_h = 0.;
+
+    omega_x = 0.;
+    omega_y = 0.;
+    omega_z = 0.;
+
+    omega_x_0 = 0.;
+    omega_y_0 = 0.;
+    omega_z_0 = 0.;
+
+    omega_E = 0.;
+    omega_N = 0.;
+    omega_h = 0.;
+
+    rho = 0.;
+
+    K = 0;
+    psi = 0;
+    theta = 0;
+
+    K_dot = 0;
+    psi_dot = 0;
+    theta_dot = 0;
+
+    phi = 60 * M_PI/180;
+    lambda = 30 * M_PI/180;
+    h = 0.;
+
+    lambda_star = 0.;
+
+    lambda_prev = 0.;
+    lambda_dot = 0.;
+    phi_prev = 0.;
+    phi_dot = 0.;
+
+    g_E = 0.;
+    g_N = 0.;
+    g_h = 0.;
+
+    a_E_Cor = 0.;
+    a_N_Cor = 0.;
+    a_h_Cor = 0.;
+
+    R_phi = 0.;
+    R_lambda = 0.;
+
+    V_E = 0.;
+    V_N = 0.;
+    V_h = 0.;
+
+    V_E_prev = 0.;
+    V_N_prev = 0.;
+    V_h_prev = 0.;
+
+    V_E_dot = 0.;
+    V_N_dot = 0.;
+    V_h_dot = 0.;
+
+    for (size_t i = 0; i < 3; ++i)
+    {
+        for (size_t j = 0; j < 3; ++j)
+        {
+                C_b_0[i][j] = 0.;
+                C_0_gamma[i][j] = 0.;
+        }
+    }
+
+    iteration = 0;
 }
 
 void InertialModule::handle()
@@ -161,7 +228,11 @@ void InertialModule::handle()
     n_N = C_0_gamma[1][0] * n_x + C_0_gamma[1][1] * n_y + C_0_gamma[1][2] * n_z;
     n_h = C_0_gamma[2][0] * n_x + C_0_gamma[2][1] * n_y + C_0_gamma[2][2] * n_z;
 
-    g_h = g * (1 + beta * sin(phi)*sin(phi) + beta_1 * sin(2*phi)*sin(2*phi));
+    //g = g_e * (1 + beta * sin(phi)*sin(phi) + beta_1 * sin(2*phi)*sin(2*phi));
+
+    g = (a*g_e * pow(cos(phi),2) + b*g_p * pow(sin(phi),2)) / sqrt(a*a * pow(cos(phi),2) + b*b * pow(sin(phi), 2));
+
+    g_h = g;
 
     lambda_dot = (lambda - lambda_prev) / dt;
     phi_dot = (phi - phi_prev) / dt;

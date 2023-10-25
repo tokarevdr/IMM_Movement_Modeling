@@ -46,6 +46,8 @@ public:
     double get_lambda() const { return lambda; }
     double get_h() const { return h; }
 
+    void reset();
+
     void handle();
 
 private:
@@ -54,7 +56,7 @@ private:
     // пилообразный сигнал для ограничения долготы в пределах [-180; 180]
     double saw(double amplitude, double value, double period);
 
-    // пилообразный сигнал для ограничения широты в пределах [-90; 90]
+    // треугольный сигнал для ограничения широты в пределах [-90; 90]
     double triangle(double amplitude, double value, double period);
 
     double dt = 0.01;
@@ -106,16 +108,19 @@ private:
     std::array< std::array<double, 3>, 3> C_i_gamma;
     std::array< std::array<double, 3>, 3> C_0_gamma;
 
-    const double e_squared = 0.0066934;
-    const double a = 6378245;
+    const double e_squared = 0.006694379990198;
+    const double a = 6378137;
+    const double b = 6356752.314245;
     const double Omega = 7.292116e-5;
     const double beta = 0.0053171;
     const double beta_1 = 0.0000071;
+    const double g_e = 9.7803253359;
+    const double g_p = 9.8321849378;
 
+    double g = 0.;
     double g_E = 0.;
     double g_N = 0.;
     double g_h = 0.;
-    double g = 9.780318;
 
     double a_E_Cor = 0.;
     double a_N_Cor = 0.;
