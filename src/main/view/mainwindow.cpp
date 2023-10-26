@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot->setInteraction(QCP::iRangeDrag, true);
     ui->plot->setInteraction(QCP::iRangeZoom, true);
 
-    ui->plot->graph(0)->setLineStyle(QCPGraph::lsNone);
-    ui->plot->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+    //ui->plot->graph(0)->setLineStyle(QCPGraph::lsNone);
+    //ui->plot->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
 
     ui->plot->rescaleAxes();
     ui->plot->replot();
@@ -158,7 +158,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 
     on_model_dataChanged();
 
-    ui->plot->replot();
+    ui->plot->graph(0)->setData(QVector<double>(), QVector<double>());
 
     connect(model, &AbstractModuleController::dataChanged, this, &MainWindow::on_model_dataChanged);
 }
@@ -179,4 +179,11 @@ void MainWindow::on_pushButton_search_clicked()
 void MainWindow::on_pushButton_reset_clicked()
 {
     model->reset();
+
+    ui->plot->graph(0)->setData(QVector<double>(), QVector<double>());
+}
+
+void MainWindow::on_lineEdit_iterations_returnPressed()
+{
+    model->setIterationCount(ui->lineEdit_iterations->text().toInt());
 }

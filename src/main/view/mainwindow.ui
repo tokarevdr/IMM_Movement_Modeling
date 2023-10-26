@@ -154,6 +154,24 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <item>
+              <widget class="QLabel" name="label_30">
+               <property name="text">
+                <string>Итераций за шаг:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_iterations">
+               <property name="text">
+                <string>1</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QLabel" name="label_3">
