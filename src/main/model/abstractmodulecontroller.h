@@ -52,6 +52,7 @@ public:
     bool setData(AbstractModuleController::Input parameter, double value);
     double getData(AbstractModuleController::Output parameter) const;
     QVector<double> getDataVector(AbstractModuleController::Output parameter) const;
+    void setIterationCount(quint8 count);
     void reset();
     void handle();
 
@@ -67,6 +68,7 @@ signals:
 protected:
     InertialModule module;
     QMap< Output, QVector<double> > data;
+    quint8 iterationCount = 1;
 };
 
 #endif // ABSTRACTMODULECONTROLLER_H

@@ -98,6 +98,11 @@ QVector<double> AbstractModuleController::getDataVector(Output parameter) const
     return data.value(parameter);
 }
 
+void AbstractModuleController::setIterationCount(quint8 count)
+{
+    iterationCount = count;
+}
+
 void AbstractModuleController::reset()
 {
     module.reset();
@@ -108,7 +113,7 @@ void AbstractModuleController::reset()
 
 void AbstractModuleController::handle()
 {
-    //for (size_t i = 0; i < 100; ++i)
+    for (size_t i = 0; i < iterationCount; ++i)
         module.handle();
 
     data[Output::t].append(module.get_t());
