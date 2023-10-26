@@ -3,6 +3,8 @@
 
 #include <array>
 
+using Matrix = std::array< std::array<double, 3>, 3>;
+
 class InertialModule
 {
 public:
@@ -11,23 +13,23 @@ public:
 
     void set_dt(double dt);
 
-    void set_n_x(double n_x) {this->n_x = n_x;}
-    void set_n_y(double n_y) {this->n_y = n_y;}
-    void set_n_z(double n_z) {this->n_z = n_z;}
+    void set_n_x(double n_x) { this->n_x = n_x; }
+    void set_n_y(double n_y) { this->n_y = n_y; }
+    void set_n_z(double n_z) { this->n_z = n_z; }
 
-    void set_omega_x(double omega_x) {this->omega_x = omega_x;}
-    void set_omega_y(double omega_y) {this->omega_y = omega_y;}
-    void set_omega_z(double omega_z) {this->omega_z = omega_z;}
+    void set_omega_x(double omega_x) { this->omega_x = omega_x; }
+    void set_omega_y(double omega_y) { this->omega_y = omega_y; }
+    void set_omega_z(double omega_z) { this->omega_z = omega_z; }
 
-    void set_rho(double rho) {this->rho = rho;}
+    void set_rho(double rho) { this->rho = rho; }
 
-    void set_phi(double phi) {this->phi = phi; this->phi_prev = phi;}
-    void set_lambda(double lambda) {this->lambda = lambda; this->lambda_prev = lambda;}
-    void set_h(double h) {this->h = h;}
+    void set_phi(double phi) { this->phi = phi; }
+    void set_lambda(double lambda) { this->lambda = lambda; }
+    void set_h(double h) { this->h = h; }
 
-    void set_K(double K) {this->K = K;}
-    void set_psi(double psi) {this->psi = psi;}
-    void set_theta(double theta) {this->theta = theta;}
+    void set_K(double K) { this->K = K; }
+    void set_psi(double psi) { this->psi = psi; }
+    void set_theta(double theta) { this->theta = theta; }
 
     double get_t() const { return dt*iteration; }
     double get_K() const { return K; }
@@ -58,6 +60,8 @@ private:
 
     // треугольный сигнал для ограничения широты в пределах [-90; 90]
     double triangle(double amplitude, double value, double period);
+
+    Matrix matmul(const Matrix& A, const Matrix& B);
 
     double dt = 0.01;
 
@@ -97,16 +101,14 @@ private:
 
     double lambda_star = 0.;
 
-    double lambda_prev = 0.;
     double lambda_dot = 0.;
-    double phi_prev = 0.;
     double phi_dot = 0.;
 
-    std::array< std::array<double, 3>, 3> C_b_0;
-    std::array< std::array<double, 3>, 3> C_0_i;
-    std::array< std::array<double, 3>, 3> C_b_i;
-    std::array< std::array<double, 3>, 3> C_i_gamma;
-    std::array< std::array<double, 3>, 3> C_0_gamma;
+    Matrix C_b_0;
+    Matrix C_0_i;
+    Matrix C_b_i;
+    Matrix C_i_gamma;
+    Matrix C_0_gamma;
 
     const double e_squared = 0.006694379990198;
     const double a = 6378137;
@@ -132,10 +134,6 @@ private:
     double V_E = 0.;
     double V_N = 0.;
     double V_h = 0.;
-
-    double V_E_prev = 0.;
-    double V_N_prev = 0.;
-    double V_h_prev = 0.;
 
     double V_E_dot = 0.;
     double V_N_dot = 0.;

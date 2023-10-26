@@ -68,9 +68,7 @@ void InertialModule::reset()
 
     lambda_star = 0.;
 
-    lambda_prev = 0.;
     lambda_dot = 0.;
-    phi_prev = 0.;
     phi_dot = 0.;
 
     g_E = 0.;
@@ -87,10 +85,6 @@ void InertialModule::reset()
     V_E = 0.;
     V_N = 0.;
     V_h = 0.;
-
-    V_E_prev = 0.;
-    V_N_prev = 0.;
-    V_h_prev = 0.;
 
     V_E_dot = 0.;
     V_N_dot = 0.;
@@ -194,7 +188,6 @@ void InertialModule::handle()
     C_0_gamma[2][1] = sin(psi);
     C_0_gamma[2][2] = cos(psi)*cos(theta);
 
-
     R_phi = a * (1 - e_squared) / pow(pow(1 - e_squared * sin(phi), 2.), 3./2) + h;
     R_lambda = a / pow(pow(1 - e_squared * sin(phi), 2.), 1./2) + h;
 
@@ -234,27 +227,20 @@ void InertialModule::handle()
 
     g_h = g;
 
-    lambda_dot = (lambda - lambda_prev) / dt;
-    phi_dot = (phi - phi_prev) / dt;
+    phi_dot = V_N / R_phi;
+    lambda_dot = V_E / (R_lambda * cos(phi));
 
-    a_E_Cor = g_E + V_h * (2*Omega + lambda_dot) * cos(phi) - V_N * (2*Omega + lambda_dot) * sin(phi);
-    a_N_Cor = g_N + V_E * (2*Omega + lambda_dot) * sin(phi) + V_h * phi_dot;
-    a_h_Cor = g_h - V_E * (2*Omega + lambda_dot) * cos(phi) - V_N * phi_dot;
+    //a_E_Cor = g_E + V_h * (2*Omega + lambda_dot) * cos(phi) - V_N * (2*Omega + lambda_dot) * sin(phi);
+    //a_N_Cor = g_N + V_E * (2*Omega + lambda_dot) * sin(phi) + V_h * phi_dot;
+    //a_h_Cor = g_h - V_E * (2*Omega + lambda_dot) * cos(phi) - V_N * phi_dot;
 
-    V_E_dot = (V_E - V_E_prev) / dt;
-    V_N_dot = (V_N - V_N_prev) / dt;
-    V_h_dot = (V_h - V_h_prev) / dt;
-
-    V_E_prev = V_E;
-    V_N_prev = V_N;
-    V_h_prev = V_h;
+    V_E_dot = n_E - a_E_Cor;
+    V_N_dot = n_N - a_N_Cor;
+    V_h_dot = n_h - a_h_Cor;
 
     V_E = V_E + (n_E - a_E_Cor) * dt;
     V_N = V_N + (n_N - a_N_Cor) * dt;
     V_h = V_h + (n_h - a_h_Cor) * dt;
-
-    phi_prev = phi;
-    lambda_prev = lambda;
 
     phi = phi + V_N / R_phi * dt;
     lambda = lambda + V_E / (R_lambda * cos(phi)) * dt;
@@ -285,5 +271,25 @@ double InertialModule::saw(double amplitude, double value, double period)
 double InertialModule::triangle(double amplitude, double value, double period)
 {
     return 2*amplitude/M_PI * asin( sin( 2*M_PI/period *value ) );
+}
+
+Matrix InertialModule::matmul(const Matrix& A, const Matrix& B)
+{
+    Matrix C;
+
+    for (size_t i = 0; i < 3; ++i)
+    {
+        for (size_t j = 0; j < 3; ++j)
+        {
+            C[i][j] = 0.;
+
+            for (size_t k = 0; k < 3; ++k)
+            {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+
+    return C;
 }
 
