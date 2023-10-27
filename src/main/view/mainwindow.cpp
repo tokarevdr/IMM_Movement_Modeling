@@ -30,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot->rescaleAxes();
     ui->plot->replot();
 
+    angularTicker = QSharedPointer<QCPAxisTickerAngle>(new QCPAxisTickerAngle);
+    ticker = QSharedPointer<QCPAxisTicker>(new QCPAxisTicker);
+
     connect(model, &AbstractModuleController::dataChanged, this, &MainWindow::on_model_dataChanged);
 }
 
@@ -186,4 +189,34 @@ void MainWindow::on_pushButton_reset_clicked()
 void MainWindow::on_lineEdit_iterations_returnPressed()
 {
     model->setIterationCount(ui->lineEdit_iterations->text().toInt());
+}
+
+void MainWindow::on_checkBox_angular_x_clicked(bool checked)
+{
+    switch (checked)
+    {
+    case true:
+        ui->plot->xAxis->setTicker(angularTicker);
+        break;
+    case false:
+        ui->plot->xAxis->setTicker(ticker);
+        break;
+    }
+
+    ui->plot->replot();
+}
+
+void MainWindow::on_checkBox_angular_y_clicked(bool checked)
+{
+    switch (checked)
+    {
+    case true:
+        ui->plot->yAxis->setTicker(angularTicker);
+        break;
+    case false:
+        ui->plot->yAxis->setTicker(ticker);
+        break;
+    }
+
+    ui->plot->replot();
 }

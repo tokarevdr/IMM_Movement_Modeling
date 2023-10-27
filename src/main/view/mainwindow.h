@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "model/abstractmodulecontroller.h"
+#include "qcpaxistickerangle.h"
 
 namespace Ui {
 class MainWindow;
@@ -58,9 +59,15 @@ private slots:
 
     void on_lineEdit_iterations_returnPressed();
 
+    void on_checkBox_angular_x_clicked(bool checked);
+
+    void on_checkBox_angular_y_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
     AbstractModuleController *model;
+    QSharedPointer<QCPAxisTickerAngle> angularTicker;
+    QSharedPointer<QCPAxisTicker> ticker;
 };
 
 #endif // MAINWINDOW_H

@@ -11,14 +11,18 @@ SOURCES += main.cpp\
     ../../import/qcustomplot.cpp \
     model/abstractmodulecontroller.cpp \
     model/timermodulecontroller.cpp \
-    model/datamodulecontroller.cpp
+    model/datamodulecontroller.cpp \
+    view/angle.cpp \
+    view/qcpaxistickerangle.cpp
 
 HEADERS  += view/mainwindow.h \
     model/inertialmodule.h \
     ../../import/qcustomplot.h \
     model/abstractmodulecontroller.h \
     model/timermodulecontroller.h \
-    model/datamodulecontroller.h
+    model/datamodulecontroller.h \
+    view/angle.h \
+    view/qcpaxistickerangle.h
 
 FORMS    += view/mainwindow.ui
 

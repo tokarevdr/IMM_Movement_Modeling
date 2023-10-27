@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>961</width>
-    <height>694</height>
+    <height>725</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -534,7 +534,7 @@
       <property name="title">
        <string>Индикация</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
+      <layout class="QHBoxLayout" name="horizontalLayout_18">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -754,6 +754,37 @@
                <string>h</string>
               </property>
              </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_14">
+           <item>
+            <widget class="QCheckBox" name="checkBox_angular_x">
+             <property name="text">
+              <string>Угловые ед.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkBox_angular_y">
+             <property name="text">
+              <string>Угловые ед.</string>
+             </property>
             </widget>
            </item>
           </layout>
