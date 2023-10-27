@@ -1,7 +1,7 @@
 #ifndef QCPAXISTICKERANGLE_H
 #define QCPAXISTICKERANGLE_H
 
-#include "../dependencies/qcustomplot.h"
+#include "../import/qcustomplot.h"
 
 class QCPAxisTickerAngle : public QCPAxisTicker
 {
