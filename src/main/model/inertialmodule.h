@@ -61,7 +61,10 @@ private:
     // треугольный сигнал для ограничения широты в пределах [-90; 90]
     double triangle(double amplitude, double value, double period);
 
+    Matrix matprod(const Matrix& A, const Matrix& B);
     Matrix matmul(const Matrix& A, const Matrix& B);
+    Matrix matmul(const Matrix& A, double k);
+    Matrix matsum(const Matrix& A, const Matrix& B);
 
     double dt = 0.01;
 
